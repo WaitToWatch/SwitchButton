@@ -27,11 +27,11 @@ import com.leroy.switchbutton.R;
  * DayOrNight SwitchButton
  * Created by leroy on 2016/9/6.
  */
-public class SwitchButton extends View implements Checkable{
+public class SwitchButton extends View implements Checkable {
     private static final int ANIMATION_DURATION = 300;
 
-    private static final int DEFAULT_WIDTH = 120;      //width of SwitchButton
-    private static final int DEFAULT_HEIGHT = DEFAULT_WIDTH / 2;
+    private float DEFAULT_WIDTH = 60;      //width of SwitchButton
+    private float DEFAULT_HEIGHT = DEFAULT_WIDTH / 2;
     private static final int DEFAULT_SPOT_PADDING = 6;
     private static final int DEFAULT_BORDER_WIDTH = 4;
 
@@ -101,6 +101,8 @@ public class SwitchButton extends View implements Checkable{
         spotPadding = a.getDimensionPixelSize(R.styleable.Switch_spotPadding, dp2px(DEFAULT_SPOT_PADDING));
         switchOnStrokeColor = a.getColor(R.styleable.Switch_switchOnStrokeColor, switchOnColor);
         switchOffStrokeColor = a.getColor(R.styleable.Switch_switchOffStrokeColor, switchOffColor);
+        DEFAULT_WIDTH = a.getDimension(R.styleable.Switch_switchWidth, dp2px(60));
+        DEFAULT_HEIGHT = a.getDimension(R.styleable.Switch_switchHeight, dp2px(30));
         duration = a.getInteger(R.styleable.Switch_duration, ANIMATION_DURATION);
         mChecked = a.getBoolean(R.styleable.Switch_checked, false);
         a.recycle();
@@ -116,8 +118,8 @@ public class SwitchButton extends View implements Checkable{
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        int width = dp2px(DEFAULT_WIDTH) + getPaddingLeft() + getPaddingRight();
-        int height = dp2px(DEFAULT_HEIGHT) + getPaddingTop() + getPaddingBottom();
+        int width = (int) DEFAULT_WIDTH + getPaddingLeft() + getPaddingRight();
+        int height = (int) DEFAULT_HEIGHT + getPaddingTop() + getPaddingBottom();
 
         if (widthSpecMode != MeasureSpec.AT_MOST) {
             width = Math.max(width, widthSpecSize);
@@ -142,8 +144,8 @@ public class SwitchButton extends View implements Checkable{
         int pb = getPaddingBottom();
         int wp = w - pl - pr;
         int hp = h - pt - pb;
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
 
         int dx = pl + (wp - sw) / 2;
         int dy = pt + (hp - sh) / 2;
@@ -182,7 +184,7 @@ public class SwitchButton extends View implements Checkable{
         drawRoundRect(canvas, switchOffColor, rectAttrs);
 
         float[] ovalAttrs = compOvalAttr(SWITCH_OFF_POS);
-        drawOval(canvas, spotOffColor,  ovalAttrs);
+        drawOval(canvas, spotOffColor, ovalAttrs);
         drawOvalIn(canvas, spotOffColorIn, ovalAttrs);
         drawCircleDot(canvas, spotOffColor, spotOffColorIn, 1, ovalAttrs);
         drawCircleDot2(canvas, spotOffColor, spotOffColorIn, 1, ovalAttrs);
@@ -199,14 +201,14 @@ public class SwitchButton extends View implements Checkable{
         rectAttrs = compRoundRectAttr(currentPos);
         drawRoundRect(canvas, switchOffColor, rectAttrs);
 
-        float[] ovalShadeOnAttrs = compRoundRectShadeOnAttr(currentPos * 3/2);
-        float[] ovalAttrs = compOvalAttr(currentPos* 3/2);
+        float[] ovalShadeOnAttrs = compRoundRectShadeOnAttr(currentPos * 3 / 2);
+        float[] ovalAttrs = compOvalAttr(currentPos * 3 / 2);
         int color = compColor(currentPos, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_ON_COLOR);
         int colorIn = compColor(currentPos, DEFAULT_SPOT_OFF_COLOR_IN, DEFAULT_SPOT_ON_COLOR_IN);
         drawRoundRect(canvas, color, ovalShadeOnAttrs);
         drawOval(canvas, color, ovalAttrs);
         drawOvalIn(canvas, colorIn, ovalAttrs);
-        if(currentPos > 0.6) {
+        if (currentPos > 0.6) {
             drawCloud(canvas, currentPos);
         }
 
@@ -224,27 +226,27 @@ public class SwitchButton extends View implements Checkable{
         drawRoundRect(canvas, switchOffColor, rectAttrs);
 
         float[] ovalAttrs;
-        if(currentPos > 2.0/3){
+        if (currentPos > 2.0 / 3) {
             ovalAttrs = compOvalAttr(0);
-        }else{
-            ovalAttrs = compOvalAttr(1 - currentPos * 3/2);
+        } else {
+            ovalAttrs = compOvalAttr(1 - currentPos * 3 / 2);
         }
-        float[] ovalShadeOffAttrs = compRoundRectShadeOffAttr(1 - currentPos * 3/2);
+        float[] ovalShadeOffAttrs = compRoundRectShadeOffAttr(1 - currentPos * 3 / 2);
         int color = compColor(currentPos, DEFAULT_SPOT_ON_COLOR, DEFAULT_SPOT_OFF_COLOR);
         int colorIn = compColor(currentPos, DEFAULT_SPOT_ON_COLOR_IN, DEFAULT_SPOT_OFF_COLOR_IN);
         drawRoundRect(canvas, color, ovalShadeOffAttrs);
         drawOval(canvas, color, ovalAttrs);
         drawOvalIn(canvas, colorIn, ovalAttrs);
-        if(currentPos > 2.0/3){
+        if (currentPos > 2.0 / 3) {
             drawCircleDot(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, 1, ovalAttrs);
             drawCircleDot2(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, 1, ovalAttrs);
             drawCircleDot3(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, 1, ovalAttrs);
-        }else{
-            drawCircleDot(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, currentPos * 3/2, ovalAttrs);
-            drawCircleDot2(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, currentPos * 3/2, ovalAttrs);
-            drawCircleDot3(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, currentPos * 3/2, ovalAttrs);
+        } else {
+            drawCircleDot(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, currentPos * 3 / 2, ovalAttrs);
+            drawCircleDot2(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, currentPos * 3 / 2, ovalAttrs);
+            drawCircleDot3(canvas, DEFAULT_SPOT_OFF_COLOR, DEFAULT_SPOT_OFF_COLOR_IN, currentPos * 3 / 2, ovalAttrs);
         }
-        if(currentPos > 0.6) {
+        if (currentPos > 0.6) {
             drawStar(canvas, DEFAULT_SPOT_OFF_COLOR_IN, currentPos);
         }
 
@@ -263,8 +265,8 @@ public class SwitchButton extends View implements Checkable{
     }
 
     private void drawRoundRectStroke(Canvas canvas, int color) {
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
 
         float left = dp2pxFloat((float) 2.4);
         float right = sw - left;
@@ -298,12 +300,12 @@ public class SwitchButton extends View implements Checkable{
         canvas.drawOval(rectF, paint);
     }
 
-    private void drawCircleDot(Canvas canvas, int color,int colorIn, float pos, float[] attrs) {
+    private void drawCircleDot(Canvas canvas, int color, int colorIn, float pos, float[] attrs) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
-        float rad = attrs[2] - dp2px(9) - (attrs[0] + attrs[2])/2;
-        float x = attrs[2] - dp2px(9) - rad + (float)(rad * Math.cos(pos * Math.PI/3));
-        float y = (attrs[1] + attrs[3])/2 - (float)(rad * Math.sin(pos * Math.PI/3));
+        float rad = attrs[2] - dp2px(9) - (attrs[0] + attrs[2]) / 2;
+        float x = attrs[2] - dp2px(9) - rad + (float) (rad * Math.cos(pos * Math.PI / 3));
+        float y = (attrs[1] + attrs[3]) / 2 - (float) (rad * Math.sin(pos * Math.PI / 3));
         paint.setColor(color);
         RectF rectF = new RectF(x - dp2px(7), y - dp2px(7), x + dp2px(7), y + dp2px(7));
         canvas.drawOval(rectF, paint);
@@ -312,12 +314,12 @@ public class SwitchButton extends View implements Checkable{
         canvas.drawOval(rectFIn, paint);
     }
 
-    private void drawCircleDot2(Canvas canvas, int color,int colorIn, float pos, float[] attrs) {
+    private void drawCircleDot2(Canvas canvas, int color, int colorIn, float pos, float[] attrs) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
-        float rad = attrs[2] - dp2px(7) - (attrs[0] + attrs[2])/2;
-        float x = attrs[2] - dp2px(7) - rad + (float)(rad * Math.cos(Math.PI * 5 /12 + pos * Math.PI* 5 /12));
-        float y = (attrs[1] + attrs[3])/2 - (float)(rad * Math.sin(Math.PI * 5 /12 + pos * Math.PI* 5 /12));
+        float rad = attrs[2] - dp2px(7) - (attrs[0] + attrs[2]) / 2;
+        float x = attrs[2] - dp2px(7) - rad + (float) (rad * Math.cos(Math.PI * 5 / 12 + pos * Math.PI * 5 / 12));
+        float y = (attrs[1] + attrs[3]) / 2 - (float) (rad * Math.sin(Math.PI * 5 / 12 + pos * Math.PI * 5 / 12));
         paint.setColor(color);
         RectF rectF = new RectF(x - dp2px(5), y - dp2px(5), x + dp2px(5), y + dp2px(5));
         canvas.drawOval(rectF, paint);
@@ -326,12 +328,12 @@ public class SwitchButton extends View implements Checkable{
         canvas.drawOval(rectFIn, paint);
     }
 
-    private void drawCircleDot3(Canvas canvas, int color,int colorIn, float pos, float[] attrs) {
+    private void drawCircleDot3(Canvas canvas, int color, int colorIn, float pos, float[] attrs) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
-        float rad = attrs[2] - dp2px(9) - (attrs[0] + attrs[2])/2;
-        float x = attrs[2] - dp2px(9) - rad + (float)(rad * Math.cos(Math.PI * 16 /12 + pos * Math.PI* 5 /12));
-        float y = (attrs[1] + attrs[3])/2 - (float)(rad * Math.sin(Math.PI * 16 /12 + pos * Math.PI* 5 /12));
+        float rad = attrs[2] - dp2px(9) - (attrs[0] + attrs[2]) / 2;
+        float x = attrs[2] - dp2px(9) - rad + (float) (rad * Math.cos(Math.PI * 16 / 12 + pos * Math.PI * 5 / 12));
+        float y = (attrs[1] + attrs[3]) / 2 - (float) (rad * Math.sin(Math.PI * 16 / 12 + pos * Math.PI * 5 / 12));
         paint.setColor(color);
         RectF rectF = new RectF(x - dp2px(5), y - dp2px(5), x + dp2px(5), y + dp2px(5));
         canvas.drawOval(rectF, paint);
@@ -341,8 +343,8 @@ public class SwitchButton extends View implements Checkable{
     }
 
     private void drawCloud(Canvas canvas, float pos) {
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setDither(true);
@@ -352,61 +354,61 @@ public class SwitchButton extends View implements Checkable{
         int cloudHeight = cloudBitmap.getHeight();
         Rect mSrcRect = new Rect(0, 0, cloudWidth, cloudHeight);
         RectF mDestRect;
-        if(pos <= 0.9){
-            float t = pos*10 - 6;
-            mDestRect = new RectF(sw/2 - dp2px(18) - dp2px(t), sh/2 - dp2px(4) - dp2px(t), sw/2 + dp2px(18) + dp2px(t), sh/2 + dp2px(20) + dp2px(t));
-        }else{
-            float t = 2*(pos*10 - 9);
-            mDestRect = new RectF(sw/2 - dp2px(22) + dp2px(t), sh/2 - dp2px(8) + dp2px(t), sw/2 + dp2px(22) - dp2px(t), sh/2 + dp2px(24) - dp2px(t));
+        if (pos <= 0.9) {
+            float t = pos * 10 - 6;
+            mDestRect = new RectF(sw / 2 - dp2px(18) - dp2px(t), sh / 2 - dp2px(4) - dp2px(t), sw / 2 + dp2px(18) + dp2px(t), sh / 2 + dp2px(20) + dp2px(t));
+        } else {
+            float t = 2 * (pos * 10 - 9);
+            mDestRect = new RectF(sw / 2 - dp2px(22) + dp2px(t), sh / 2 - dp2px(8) + dp2px(t), sw / 2 + dp2px(22) - dp2px(t), sh / 2 + dp2px(24) - dp2px(t));
         }
         canvas.drawBitmap(cloudBitmap, mSrcRect, mDestRect, paint);
     }
 
     private void drawStar(Canvas canvas, int color, float pos) {
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
 
         float stars[][] = new float[7][2];
-        stars[0][0] = (float) (sw/2.0);
-        stars[0][1] = (float) (sh/5.0);
+        stars[0][0] = (float) (sw / 2.0);
+        stars[0][1] = (float) (sh / 5.0);
 
-        stars[1][0] = (float) (sw * 3/4.0);
-        stars[1][1] = (float) (sh/5.0);
+        stars[1][0] = (float) (sw * 3 / 4.0);
+        stars[1][1] = (float) (sh / 5.0);
 
-        stars[2][0] = (float) (sw * 5/8.0);
-        stars[2][1] = (float) (sh * 2/5.0);
+        stars[2][0] = (float) (sw * 5 / 8.0);
+        stars[2][1] = (float) (sh * 2 / 5.0);
 
-        stars[3][0] = (float) (sw * 27/40.0);
-        stars[3][1] = (float) (sh * 3/5.0);
+        stars[3][0] = (float) (sw * 27 / 40.0);
+        stars[3][1] = (float) (sh * 3 / 5.0);
 
-        stars[4][0] = (float) (sw * 5/6.0);
-        stars[4][1] = (float) (sh * 9/20.0);
+        stars[4][0] = (float) (sw * 5 / 6.0);
+        stars[4][1] = (float) (sh * 9 / 20.0);
 
-        stars[5][0] = (float) (sw * 4/5.0);
-        stars[5][1] = (float) (sh * 7/10.0);
+        stars[5][0] = (float) (sw * 4 / 5.0);
+        stars[5][1] = (float) (sh * 7 / 10.0);
 
-        stars[6][0] = (float) (sw * 11/20.0);
-        stars[6][1] = (float) (sh * 3/4.0);
+        stars[6][0] = (float) (sw * 11 / 20.0);
+        stars[6][1] = (float) (sh * 3 / 4.0);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color);
 
         float t = 10 * pos - 6;
-        if(pos > 0.8){
+        if (pos > 0.8) {
             t = 10 - 10 * pos;
         }
-        canvas.drawCircle(stars[0][0], stars[0][1], 6 + 2*t, paint);
-        canvas.drawCircle(stars[1][0], stars[1][1], 5 + 2*t, paint);
-        canvas.drawCircle(stars[2][0], stars[2][1], 5 + 2*t, paint);
-        canvas.drawCircle(stars[3][0], stars[3][1], 4 + 2*t, paint);
-        canvas.drawCircle(stars[4][0], stars[4][1], 8 - 2*t, paint);
-        canvas.drawCircle(stars[5][0], stars[5][1], 7 - 2*t, paint);
-        canvas.drawCircle(stars[6][0], stars[6][1], 7 - 2*t, paint);
+        canvas.drawCircle(stars[0][0], stars[0][1], 6 + 2 * t, paint);
+        canvas.drawCircle(stars[1][0], stars[1][1], 5 + 2 * t, paint);
+        canvas.drawCircle(stars[2][0], stars[2][1], 5 + 2 * t, paint);
+        canvas.drawCircle(stars[3][0], stars[3][1], 4 + 2 * t, paint);
+        canvas.drawCircle(stars[4][0], stars[4][1], 8 - 2 * t, paint);
+        canvas.drawCircle(stars[5][0], stars[5][1], 7 - 2 * t, paint);
+        canvas.drawCircle(stars[6][0], stars[6][1], 7 - 2 * t, paint);
     }
 
     private float[] compRoundRectAttr(float pos) {
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
 
         float left = sw * pos;
         float right = sw - left;
@@ -418,18 +420,18 @@ public class SwitchButton extends View implements Checkable{
     }
 
     private float[] compRoundRectShadeOnAttr(float pos) {
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
         int oh = sh - 2 * spotPadding;
         float left, right, top, bottom;
-        if(pos < 0.35){
+        if (pos < 0.35) {
             left = 0;
             right = spotPadding + (sw - sh) * pos + oh;
             top = spotPadding;
             bottom = oh + top;
-        }else{
-            left = spotPadding + (sw - sh) * pos *2/3;
-            right = spotPadding + (sw - sh) * pos *2/3+ oh;
+        } else {
+            left = spotPadding + (sw - sh) * pos * 2 / 3;
+            right = spotPadding + (sw - sh) * pos * 2 / 3 + oh;
             top = spotPadding;
             bottom = oh + top;
         }
@@ -438,19 +440,19 @@ public class SwitchButton extends View implements Checkable{
     }
 
     private float[] compRoundRectShadeOffAttr(float pos) {
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
         int oh = sh - 2 * spotPadding;
         float left, right, top, bottom;
 
-        if(pos > 0.65){
+        if (pos > 0.65) {
             left = spotPadding + (sw - sh) * pos;
             right = sw - spotPadding;
             top = spotPadding;
             bottom = oh + top;
-        }else{
-            left = spotPadding + (sw - sh) * (2*pos + 1)/3;
-            right = spotPadding + (sw - sh) * (2*pos + 1)/3 + oh;
+        } else {
+            left = spotPadding + (sw - sh) * (2 * pos + 1) / 3;
+            right = spotPadding + (sw - sh) * (2 * pos + 1) / 3 + oh;
             top = spotPadding;
             bottom = oh + top;
         }
@@ -459,11 +461,11 @@ public class SwitchButton extends View implements Checkable{
     }
 
     private float[] compOvalAttr(float pos) {
-        if(pos > 1){
+        if (pos > 1) {
             pos = 1;
         }
-        int sw = dp2px(DEFAULT_WIDTH);
-        int sh = dp2px(DEFAULT_HEIGHT);
+        int sw = (int)DEFAULT_WIDTH;
+        int sh = (int)DEFAULT_HEIGHT;
         int oh = sh - 2 * spotPadding;
 
         float left = spotPadding + (sw - sh) * pos;

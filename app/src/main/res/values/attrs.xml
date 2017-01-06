@@ -12,6 +12,8 @@
         <attr name="switchOnStrokeColor" format="reference|color"/>
         <attr name="switchOffStrokeColor" format="reference|color"/>
         <attr name="spotPadding" format="reference|dimension"/>
+        <attr name="switchWidth" format="reference|dimension"/>
+        <attr name="switchHeight" format="reference|dimension"/>
         <attr name="duration" format="reference|integer" />
     </declare-styleable>
     
